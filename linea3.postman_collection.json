@@ -1,0 +1,775 @@
+{
+	"info": {
+		"_postman_id": "1c816588-0e20-4e8d-a7fd-9f64b07a20bd",
+		"name": "linea3",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23632256"
+	},
+	"item": [
+		{
+			"name": "equipos",
+			"item": [
+				{
+					"name": "llamar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "crear",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let counter = parseInt(pm.collectionVariables.get(\"equipoCounter\") || \"0\");\r",
+									"\r",
+									"if (counter < 100) {\r",
+									"    counter++;\r",
+									"    pm.collectionVariables.set(\"equipoCounter\", counter);\r",
+									"\r",
+									"    const equipoData = {\r",
+									"        \"nombre\": `Equipo ${counter}`,\r",
+									"        \"ciudad\": `Ciudad ${counter}`,\r",
+									"        \"fundacion\": `199${counter % 10}-0${(counter % 9) + 1}-0${(counter % 28 + 1)}`\r",
+									"    };\r",
+									"\r",
+									"    pm.request.body.update(JSON.stringify(equipoData));\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.request.url.toString(),\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(equipoData)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"        } else {\r",
+									"            console.log(`✅ Equipo ${counter} creado - Status: ${response.code}`);\r",
+									"        }\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"✔️ Finalizada la creación de 100 equipos.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/equipos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"equipos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "jugadores",
+			"item": [
+				{
+					"name": "llamar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "crear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let counter = parseInt(pm.collectionVariables.get(\"jugadorCounter\") || \"0\");\r",
+									"\r",
+									"if (counter < 100) {\r",
+									"    counter++;\r",
+									"    pm.collectionVariables.set(\"jugadorCounter\", counter);\r",
+									"\r",
+									"    const posiciones = [\"Delantero\", \"Defensa\", \"Portero\", \"Centrocampista\"];\r",
+									"    const nacionalidades = [\"Colombia\", \"Argentina\", \"Chile\", \"Uruguay\", \"Paraguay\"];\r",
+									"    const posicion = posiciones[counter % posiciones.length];\r",
+									"    const nacionalidad = nacionalidades[counter % nacionalidades.length];\r",
+									"\r",
+									"    const year = 1990 + (counter % 10);\r",
+									"    const month = String((counter % 12) + 1).padStart(2, '0');\r",
+									"    const day = String((counter % 28) + 1).padStart(2, '0');\r",
+									"    const fechaNac = `${year}-${month}-${day}`;\r",
+									"\r",
+									"    const jugadorData = {\r",
+									"        \"nombre\": `Jugador ${counter}`,\r",
+									"        \"posicion\": posicion,\r",
+									"        \"dorsal\": (counter % 30) + 1,\r",
+									"        \"fecha_nac\": fechaNac,\r",
+									"        \"nacionalidad\": nacionalidad,\r",
+									"        \"id_equipo\": (counter % 10) + 1,\r",
+									"        \"equipo\": null,\r",
+									"        \"estadisticas\": []\r",
+									"    };\r",
+									"\r",
+									"    // Este paso es clave: ACTUALIZA el body antes de enviar\r",
+									"    pm.request.body.update(JSON.stringify(jugadorData));\r",
+									"    console.log(`Jugador ${counter} generado correctamente: ${jugadorData.nombre}`);\r",
+									"} else {\r",
+									"    console.log(\"✔️ 100 jugadores generados.\");\r",
+									"    pm.execution.setNextRequest(null);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/jugadores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jugadores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "entrenadores",
+			"item": [
+				{
+					"name": "llamar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "crear",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let counter = parseInt(pm.collectionVariables.get(\"entrenadorCounter\") || \"0\");\r",
+									"\r",
+									"if (counter < 100) {\r",
+									"    counter++;\r",
+									"    pm.collectionVariables.set(\"entrenadorCounter\", counter);\r",
+									"\r",
+									"    const specialties = [\"Ataque\", \"Defensa\", \"Mediocampo\", \"Preparación Física\", \"Táctica\", \"Psicología\", \"Análisis\", \"Base\", \"Porteros\", \"Readaptación\"];\r",
+									"    const entrenadorData = {\r",
+									"        \"nombre\": `Entrenador ${counter}`,\r",
+									"        \"especialidad\": specialties[counter % specialties.length],\r",
+									"        \"id_equipo\": (counter % 10) + 1\r",
+									"    };\r",
+									"\r",
+									"    pm.request.body.update(JSON.stringify(entrenadorData));\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.request.url.toString(),\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(entrenadorData)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"        } else {\r",
+									"            console.log(`✅ Entrenador ${counter} creado - Status: ${response.code}`);\r",
+									"        }\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"✔️ Finalizada la creación de 100 entrenadores.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/entrenadores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"entrenadores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "partidos",
+			"item": [
+				{
+					"name": "llamar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "crear",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let counter = parseInt(pm.collectionVariables.get(\"partidoCounter\") || \"0\");\r",
+									"\r",
+									"if (counter < 100) {\r",
+									"    counter++;\r",
+									"    pm.collectionVariables.set(\"partidoCounter\", counter);\r",
+									"\r",
+									"    let local = (counter % 10) + 1;\r",
+									"    let visita = ((counter + 1) % 10) + 1;\r",
+									"    if (local === visita) visita = (visita % 10) + 1;\r",
+									"\r",
+									"    const partidoData = {\r",
+									"        \"fecha\": `2024-04-${String((counter % 28) + 1).padStart(2, '0')}`,\r",
+									"        \"estadio\": `Estadio ${counter}`,\r",
+									"        \"equipo_local\": local,\r",
+									"        \"equipo_visita\": visita,\r",
+									"        \"goles_local\": counter % 4,\r",
+									"        \"goles_visita\": (counter + 1) % 4\r",
+									"    };\r",
+									"\r",
+									"    pm.request.body.update(JSON.stringify(partidoData));\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.request.url.toString(),\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(partidoData)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"        } else {\r",
+									"            console.log(`✅ Partido ${counter} creado - Status: ${response.code}`);\r",
+									"        }\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"✔️ Finalizada la creación de 100 partidos.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/partidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"partidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "estadisticas",
+			"item": [
+				{
+					"name": "llamar",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "crear",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let counter = parseInt(pm.collectionVariables.get(\"estadisticaCounter\") || \"0\");\r",
+									"\r",
+									"if (counter < 100) {\r",
+									"    counter++;\r",
+									"    pm.collectionVariables.set(\"estadisticaCounter\", counter);\r",
+									"\r",
+									"    const estadisticaData = {\r",
+									"        \"id_jugador\": (counter % 10) + 1,\r",
+									"        \"id_partido\": ((counter + 1) % 10) + 1,\r",
+									"        \"minutos_jugados\": 90,\r",
+									"        \"goles\": counter % 3,\r",
+									"        \"asistencias\": counter % 2,\r",
+									"        \"tarjetas_amarillas\": counter % 2,\r",
+									"        \"tarjetas_rojas\": (counter % 20 === 0 ? 1 : 0)\r",
+									"    };\r",
+									"\r",
+									"    pm.request.body.update(JSON.stringify(estadisticaData));\r",
+									"\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.request.url.toString(),\r",
+									"        method: 'POST',\r",
+									"        header: {\r",
+									"            'Content-Type': 'application/json'\r",
+									"        },\r",
+									"        body: {\r",
+									"            mode: 'raw',\r",
+									"            raw: JSON.stringify(estadisticaData)\r",
+									"        }\r",
+									"    }, function (err, response) {\r",
+									"        if (err) {\r",
+									"            console.error(err);\r",
+									"        } else {\r",
+									"            console.log(`✅ Estadística ${counter} creada - Status: ${response.code}`);\r",
+									"        }\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"✔️ Finalizada la creación de 100 estadísticas.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/estadisticas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"estadisticas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Post data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let counter = parseInt(pm.collectionVariables.get(\"jugadorCounter\") || \"0\");\r",
+							"\r",
+							"if (counter < 100) {\r",
+							"    counter++;\r",
+							"    pm.collectionVariables.set(\"jugadorCounter\", counter);\r",
+							"\r",
+							"    const posiciones = [\"Delantero\", \"Defensa\", \"Portero\", \"Centrocampista\"];\r",
+							"    const nacionalidades = [\"Colombia\", \"Argentina\", \"Chile\", \"Uruguay\", \"Paraguay\"];\r",
+							"    const posicion = posiciones[counter % posiciones.length];\r",
+							"    const nacionalidad = nacionalidades[counter % nacionalidades.length];\r",
+							"    const fechaNac = `199${Math.floor(counter % 10)}-0${(counter % 9) + 1}-0${(counter % 28) + 1}`;\r",
+							"    const id_equipo = (counter % 10) + 1;\r",
+							"\r",
+							"    const jugadorData = {\r",
+							"        \"nombre\": `Jugador ${counter}`,\r",
+							"        \"posicion\": posicion,\r",
+							"        \"dorsal\": (counter % 30) + 1,\r",
+							"        \"fecha_nac\": fechaNac,\r",
+							"        \"nacionalidad\": nacionalidad,\r",
+							"        \"id_equipo\": id_equipo,\r",
+							"        \"equipo\": null,\r",
+							"        \"estadisticas\": []\r",
+							"    };\r",
+							"\r",
+							"    pm.request.body.update(JSON.stringify(jugadorData));\r",
+							"    console.log(`Jugador ${counter} generado: ${jugadorData.nombre}`);\r",
+							"} else {\r",
+							"    console.log(\"✔️ 100 jugadores generados.\");\r",
+							"    postman.setNextRequest(null);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/jugadores",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"jugadores"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Update data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "entrenadorCounter",
+			"value": ""
+		},
+		{
+			"key": "jugadorCounter",
+			"value": "0"
+		},
+		{
+			"key": "equipoCounter",
+			"value": ""
+		},
+		{
+			"key": "partidoCounter",
+			"value": ""
+		},
+		{
+			"key": "estadisticaCounter",
+			"value": ""
+		}
+	]
+}
